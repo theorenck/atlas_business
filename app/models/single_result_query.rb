@@ -1,0 +1,3 @@
+class SingleResultQuery < ResultQuery
+
+end

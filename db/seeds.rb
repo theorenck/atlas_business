@@ -1,4 +1,4 @@
-#encoding: utf-8 
+#encoding: utf-8
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
@@ -43,8 +43,8 @@ novosContratosIndicator = Indicator.create(name: 'Novos contratos', description:
 Widget.create(widget_type: status, color: 'blue', position:1, size:3, dashboard: dash, indicator: novosContratosIndicator)
 
 # contratosAtivos
-contratosAtivosQuery = SingleValueQuery.new(statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacoes) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} < {TS :fim}")
-Parameter.create(name: 'situacoes',data_type:'string' ,default_value:"'LOC Locado', 'LOC Finalizado', 'LOC Cancelado'", query: contratosAtivosQuery)
+contratosAtivosQuery = SingleValueQuery.new(statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacao) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} < {TS :fim} AND p.dataemiss <> 0")
+Parameter.create(name: 'situacao',data_type:'string' ,default_value:"'LOC Locado'", query: contratosAtivosQuery)
 Parameter.create(name: 'fim',data_type:'datetime' ,default_value:"'2014-12-30 00:00:00'", query: contratosAtivosQuery )
 novosContratosAtivosIndicator = Indicator.create(name: 'Contratos Ativos', description: 'novosContratosAtivos', query: contratosAtivosQuery)
 Widget.create(widget_type: status, color: 'orange', position:0, size:3, dashboard: dash, indicator: novosContratosAtivosIndicator)

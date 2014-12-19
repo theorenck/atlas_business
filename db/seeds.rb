@@ -1,3 +1,4 @@
+#encoding: utf-8 
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
@@ -68,10 +69,10 @@ Widget.create(widget_type: pie, position:5, size:4, dashboard: dash, indicator: 
 pedidosPorSituacaoQuery = ResultQuery.new(statement: "SELECT p.situacao AS \"SITUACAO\", count(*) AS \"QUANTIDADE\" FROM  zw14vped p WHERE p.situacao IS NOT NULL AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim} GROUP BY   p.situacao")
 Parameter.create(name: 'inicio',data_type:'datetime' ,default_value:"'2014-10-30 00:00:00'", query: pedidosPorSituacaoQuery)
 Parameter.create(name: 'fim',data_type:'datetime' ,default_value:"'2014-11-30 00:00:00'", query: pedidosPorSituacaoQuery )
-pedidosPorSituacaoIndicator = Indicator.create(name: 'Pedidos por situação', description: 'pedidosPorSituacao', query: pedidosPorSituacaoQuery)
+pedidosPorSituacaoIndicator = Indicator.create(name: "Pedidos por situação", description: 'pedidosPorSituacao', query: pedidosPorSituacaoQuery)
 Widget.create(widget_type: pie, position:6, size:4, dashboard: dash, indicator: pedidosPorSituacaoIndicator)
 
 user = User.create!(username:"admin", password:"admin", email:"zeta@zeta.com.br", token: '4361a34b6472e4634cd27f8d3f37108e')
-rmpoa = APIServer.create(url: 'http://prod-04:3000/api', name:'RM POA', description: '')
+rmpoa = APIServer.create(url: "http://prod-04:3000/api", name:'RM POA', description: '')
 Permission.create(dashboard: dash, api_server: rmpoa, user: user)
 

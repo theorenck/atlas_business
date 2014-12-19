@@ -19,7 +19,7 @@ class API::V1::DashboardsController < ApplicationController
     @dashboard = Dashboard.new(dashboard_params)
 
     if @dashboard.save
-      render :show, status: :created, location: @dashboard
+      render json: @dashboard
     else
       render json: @dashboard.errors, status: :unprocessable_entity
     end
@@ -28,7 +28,7 @@ class API::V1::DashboardsController < ApplicationController
   # PATCH/PUT /dashboards/1
   def update
     if @dashboard.update(dashboard_params)
-      render :show, status: :ok, location: @dashboard
+      render json: @dashboard
     else
       render json: @dashboard.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,9 @@ class API::V1::DashboardsController < ApplicationController
     end
 
     def dashboard_params
-      params.require(:dashboard).permit(:code, :description)
+      params.require(:dashboard).permit(
+        :name, 
+        :description
+      )
     end
 end

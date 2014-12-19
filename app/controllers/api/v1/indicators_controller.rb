@@ -18,7 +18,7 @@ class API::V1::IndicatorsController < ApplicationController
     @indicator = Indicator.new(indicator_params)
 
     if @indicator.save
-      render :show, status: :created, location: @indicator
+      render json: @indicator
     else
       render json: @indicator.errors, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class API::V1::IndicatorsController < ApplicationController
   # PATCH/PUT /indicators/1
   def update
     if @indicator.update(indicator_params)
-      render :show, status: :ok, location: @indicator
+      render json: @indicator
     else
       render json: @indicator.errors, status: :unprocessable_entity
     end
@@ -45,6 +45,9 @@ class API::V1::IndicatorsController < ApplicationController
     end
 
     def indicator_params
+      params[:indicator][:query_attributes] = params[:indicator][:query] if params[:indicator][:query]
+      params[:indicator][:query_attributes][:parameters_attributes] = params[:indicator][:query_attributes][:parameters] if params[:indicator][:query_attributes][:parameters]
+      
       params.require(:indicator).permit(
         :name,
         :description,

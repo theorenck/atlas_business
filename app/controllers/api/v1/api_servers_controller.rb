@@ -27,7 +27,7 @@ class API::V1::APIServersController < ApplicationController
   # PATCH/PUT /api_servers/1
   def update
     if @api_server.update(api_server_params)
-      render :show, status: :ok, location: @api_server
+      render json: @api_server, status: :ok
     else
       render json: @api_server.errors, status: :unprocessable_entity
     end

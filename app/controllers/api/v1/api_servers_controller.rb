@@ -1,5 +1,5 @@
 class API::V1::APIServersController < ApplicationController
-  
+
   before_action :set_api_server, only: [:show, :update, :destroy]
 
   # GET /api_servers
@@ -18,7 +18,7 @@ class API::V1::APIServersController < ApplicationController
     @api_server = APIServer.new(api_server_params)
 
     if @api_server.save
-      render :show, status: :created, location: @api_server
+      render json: @api_server
     else
       render json: @api_server.errors, status: :unprocessable_entity
     end
@@ -45,6 +45,6 @@ class API::V1::APIServersController < ApplicationController
     end
 
     def api_server_params
-      params.require(:api_server).permit(:url, :description, :status)
+      params.require(:api_server).permit(:url, :description, :name)
     end
 end

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :api_servers
       resources :dashboards
       resources :indicators
+      resources :widgets
     end
   end
 

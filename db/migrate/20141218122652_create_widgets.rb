@@ -6,7 +6,7 @@ class CreateWidgets < ActiveRecord::Migration
       t.integer :size
       t.string :name
       t.string :description
-      t.boolean :customized
+      t.boolean :customized, :default => false
       t.references :dashboard, index: true
       t.references :indicator, index: true
       t.references :widget_type, index: true

@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 20141218122652) do
     t.integer  "size"
     t.string   "name"
     t.string   "description"
-    t.boolean  "customized"
+    t.boolean  "customized",     default: false
     t.integer  "dashboard_id"
     t.integer  "indicator_id"
     t.integer  "widget_type_id"

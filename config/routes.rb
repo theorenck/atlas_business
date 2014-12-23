@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :dashboards
       resources :indicators
       resources :widgets
+      resources :widget_types
     end
   end
 

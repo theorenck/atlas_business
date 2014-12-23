@@ -94,6 +94,8 @@ ActiveRecord::Schema.define(version: 20141218122652) do
     t.string   "color"
     t.integer  "position"
     t.integer  "size"
+    t.string   "name"
+    t.string   "description"
     t.integer  "dashboard_id"
     t.integer  "indicator_id"
     t.integer  "widget_type_id"

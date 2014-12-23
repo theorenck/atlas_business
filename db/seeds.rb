@@ -25,14 +25,14 @@ fatQuery = SingleValueQuery.new(statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_
 Parameter.create(name: 'inicio', data_type:'datetime' ,default_value:"'2000-01-01 00:00:00'", query: fatQuery)
 Parameter.create(name: 'fim', data_type:'datetime' ,default_value:"'2014-12-30 00:00:00'", query: fatQuery )
 fatIndicator = Indicator.create(unity: 'R$',name: 'Faturamento', description: "popover", query: fatQuery)
-Widget.create(widget_type: status, color: 'green', position:2 , size:3, dashboard: dash, indicator: fatIndicator)
+Widget.create(name:'ta vazio', description:'tambem ta vazio', widget_type: status, color: 'green', position:2 , size:3, dashboard: dash, indicator: fatIndicator)
 
 # valorInadimplencia
 vlInadimplenciaQuery = SingleValueQuery.new(statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_INADIMPLENCIA\" FROM zw14fflu f WHERE f.modalidade = 'P' AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datafluxo-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}")
 Parameter.create(name: 'inicio',data_type:'datetime' ,default_value:"'2000-01-01 00:00:00'", query: vlInadimplenciaQuery)
 Parameter.create(name: 'fim',data_type:'datetime' ,default_value:"'2014-12-30 00:00:00'", query: vlInadimplenciaQuery )
 vlInadimplenciaIndicator = Indicator.create(unity: '%', name: 'Inadimplencia', description: 'valorInadimplencia', query: vlInadimplenciaQuery)
-Widget.create(widget_type: status, color: 'red', position:3 , size:3, dashboard: dash, indicator: vlInadimplenciaIndicator)
+Widget.create(name:'ta vazio', description:'tambem ta vazio', widget_type: status, color: 'red', position:3 , size:3, dashboard: dash, indicator: vlInadimplenciaIndicator)
 
 # novosContratos
 novosContratosQuery = SingleValueQuery.new(statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacoes) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}")
@@ -40,14 +40,14 @@ Parameter.create(name: 'situacoes',data_type:'string' ,default_value:"'LOC Locad
 Parameter.create(name: 'inicio',data_type:'datetime' ,default_value:"'2000-01-01 00:00:00'", query: novosContratosQuery)
 Parameter.create(name: 'fim',data_type:'datetime' ,default_value:"'2014-12-30 00:00:00'", query: novosContratosQuery )
 novosContratosIndicator = Indicator.create(name: 'Novos contratos', description: 'novosContratos', query: novosContratosQuery)
-Widget.create(widget_type: status, color: 'blue', position:1, size:3, dashboard: dash, indicator: novosContratosIndicator)
+Widget.create(name:'ta vazio', description:'tambem ta vazio', widget_type: status, color: 'blue', position:1, size:3, dashboard: dash, indicator: novosContratosIndicator)
 
 # contratosAtivos
 contratosAtivosQuery = SingleValueQuery.new(statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacao) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} < {TS :fim} AND p.dataemiss <> 0")
 Parameter.create(name: 'situacao',data_type:'string' ,default_value:"'LOC Locado'", query: contratosAtivosQuery)
 Parameter.create(name: 'fim',data_type:'datetime' ,default_value:"'2014-12-30 00:00:00'", query: contratosAtivosQuery )
 novosContratosAtivosIndicator = Indicator.create(name: 'Contratos Ativos', description: 'novosContratosAtivos', query: contratosAtivosQuery)
-Widget.create(widget_type: status, color: 'orange', position:0, size:3, dashboard: dash, indicator: novosContratosAtivosIndicator)
+Widget.create(name:'ta vazio', description:'tambem ta vazio', widget_type: status, color: 'orange', position:0, size:3, dashboard: dash, indicator: novosContratosAtivosIndicator)
 
 # novosContratosDia
 novosContratosDiaQuery = ResultQuery.new(statement: "SELECT {FN CONVERT({FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})},SQL_DATE)} AS \"DATA_EMISSAO\", count(*) AS \"QUANTIDADE\" FROM zw14vped p WHERE  p.situacao IN (:situacoes)  AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})}   BETWEEN {TS :inicio} AND {TS :fim} GROUP BY  p.dataemiss  ORDER BY  p.dataemiss DESC")

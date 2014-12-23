@@ -17,6 +17,9 @@ class API::V1::PermissionsController < ApplicationController
   def create
     @permission = Permission.new(permission_params)
 
+    p '@@@@@@@@'
+    p permission_params
+
     if @permission.save
       render json: @permission
     else
@@ -44,11 +47,7 @@ class API::V1::PermissionsController < ApplicationController
       @permission = Permission.find(params[:id])
     end
 
-    def widget_params
-      p params[:permission]
-
+    def permission_params
       params.require(:permission).permit(:user_id, :dashboard_id, :api_server_id)
-
-      p '@@@'
     end
 end

@@ -20,3 +20,6 @@ gem 'thin', '~> 1.6.3'
 
 # Automatically generate an entity-relationship diagram (ERD) for your Rails models.
 # gem 'rails-erd', '~> 1.2.1', :group => :development
+
+# Make any Ruby object quack like ActiveRecord
+gem 'active_type', '~> 0.3.1'

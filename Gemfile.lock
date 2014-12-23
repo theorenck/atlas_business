@@ -16,6 +16,8 @@ GEM
       erubis (~> 2.7.0)
     active_model_serializers (0.8.2)
       activemodel (>= 3.0)
+    active_type (0.3.1)
+      activerecord (>= 3.2)
     activemodel (4.1.7)
       activesupport (= 4.1.7)
       builder (~> 3.1)
@@ -92,6 +94,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.8.0)
+  active_type (~> 0.3.1)
   pg (~> 0.17.1)
   rack-cors (~> 0.2.9)
   rails (= 4.1.7)

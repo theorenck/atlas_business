@@ -48,7 +48,12 @@ class API::V1::WidgetsController < ApplicationController
       params.require(:widget).permit(
         :color, 
         :position,
-        :size
+        :size,
+        :name,
+        :description,
+        :dashboard_id,
+        :indicator_id,
+        :widget_type_id
       )
     end
 end

@@ -51,6 +51,7 @@ class API::V1::WidgetsController < ApplicationController
         :size,
         :name,
         :description,
+        :customized,
         :dashboard_id,
         :indicator_id,
         :widget_type_id

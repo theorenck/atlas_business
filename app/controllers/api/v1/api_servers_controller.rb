@@ -4,8 +4,13 @@ class API::V1::APIServersController < ApplicationController
 
   # GET /api_servers
   def index
-    @api_servers = APIServer.all
-    render json: @api_servers
+    if @authenticated.admin
+      @api_servers = APIServer.all
+      render json: @api_servers
+    else
+      @api_servers = APIServer.joins(:permissions).where(:permissions => {:user_id => @authenticated.id})
+      render json: @api_servers
+    end
   end
 
   # GET /api_servers/1

@@ -4,8 +4,7 @@ class API::V1::DashboardsController < ApplicationController
 
   # GET /dashboards
   def index
-    
-    if @authenticated.token = '4361a34b6472e4634cd27f8d3f37108e'
+    if @authenticated.admin
       @dashboards = Dashboard.all  
       render json: @dashboards
     else

@@ -72,7 +72,7 @@ Parameter.create(name: 'fim',data_type:'datetime' ,default_value:"'2014-11-30 00
 pedidosPorSituacaoIndicator = Indicator.create(name: "Pedidos por situação", description: 'pedidosPorSituacao', query: pedidosPorSituacaoQuery)
 Widget.create(widget_type: pie, position:6, size:4, dashboard: dash, indicator: pedidosPorSituacaoIndicator)
 
-user = User.create!(username:"admin", password:"admin", email:"zeta@zeta.com.br", token: '4361a34b6472e4634cd27f8d3f37108e')
+user = User.create!(username:"admin", password:"admin", email:"zeta@zeta.com.br", token: '4361a34b6472e4634cd27f8d3f37108e', admin: true)
 rmpoa = APIServer.create(url: "http://prod-04:3000/api", name:'RM POA', description: '')
 Permission.create(dashboard: dash, api_server: rmpoa, user: user)
 

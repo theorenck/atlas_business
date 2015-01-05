@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20141218122652) do
     t.string   "username"
     t.string   "password"
     t.string   "token"
+    t.boolean  "admin"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

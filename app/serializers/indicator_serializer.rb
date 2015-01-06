@@ -1,5 +1,4 @@
- class IndicatorSerializer < ActiveModel::Serializer
+class IndicatorSerializer < ActiveModel::Serializer
   attributes :id, :name, :description, :unity
-
-  has_one :query
+  has_one :source
 end

@@ -1,4 +1,4 @@
-class QuerySerializer < ActiveModel::Serializer
+class QuerySerializer < SourceSerializer
   attributes :type, :statement
-  has_many :parameters    
+
 end

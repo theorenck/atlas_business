@@ -2,7 +2,7 @@
 dash   = Dashboard.create(name: 'Dashboard', description: 'Dash description')
 status = WidgetType.create(name:'status')
 unity = Unity.create(name: 'Dinheiro', symbol: 'R$')
-source = Query.create(code: 'Faturamento', statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\" FROM zw14fflu f WHERE f.modalidade IN ('P','R') AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}")
+source = Query.create(name: 'Faturamento', statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\" FROM zw14fflu f WHERE f.modalidade IN ('P','R') AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}")
 
 indicator = Indicator.new(unity: unity, name: 'Faturamento', description: "popover", source: source)
 indicator.parameters<<TypedParameter.new(name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00")

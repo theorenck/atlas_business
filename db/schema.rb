@@ -46,16 +46,16 @@ ActiveRecord::Schema.define(version: 20150106184803) do
   end
 
   create_table "indicators", force: true do |t|
-    t.string   "type"
     t.string   "name"
     t.string   "description"
     t.integer  "source_id"
+    t.string   "source_type"
     t.integer  "unity_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "indicators", ["source_id"], name: "index_indicators_on_source_id", using: :btree
+  add_index "indicators", ["source_id", "source_type"], name: "index_indicators_on_source_id_and_source_type", using: :btree
   add_index "indicators", ["unity_id"], name: "index_indicators_on_unity_id", using: :btree
 
   create_table "parameters", force: true do |t|
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(version: 20150106184803) do
 
   create_table "sources", force: true do |t|
     t.string   "type"
-    t.string   "code"
+    t.string   "name"
     t.text     "statement"
     t.integer  "limit"
     t.integer  "offset"

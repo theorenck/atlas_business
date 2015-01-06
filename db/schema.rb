@@ -11,20 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141218122652) do
+ActiveRecord::Schema.define(version: 20150106184803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
-
-  create_table "api_servers", force: true do |t|
-    t.string   "name"
-    t.string   "description"
-    t.string   "url"
-    t.integer  "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "dashboards", force: true do |t|
     t.string   "name"
@@ -33,44 +24,85 @@ ActiveRecord::Schema.define(version: 20141218122652) do
     t.datetime "updated_at"
   end
 
-  create_table "indicators", force: true do |t|
-    t.string   "unity"
+  create_table "data_source_servers", force: true do |t|
     t.string   "name"
     t.string   "description"
-    t.integer  "query_id"
-    t.string   "type"
+    t.string   "url"
+    t.boolean  "alive"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "indicators", ["query_id"], name: "index_indicators_on_query_id", using: :btree
+  create_table "executions", force: true do |t|
+    t.integer  "aggregation_id"
+    t.integer  "function_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "functions", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "indicators", force: true do |t|
+    t.string   "type"
+    t.string   "name"
+    t.string   "description"
+    t.integer  "source_id"
+    t.integer  "unity_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "indicators", ["source_id"], name: "index_indicators_on_source_id", using: :btree
+  add_index "indicators", ["unity_id"], name: "index_indicators_on_unity_id", using: :btree
 
   create_table "parameters", force: true do |t|
+    t.string   "type"
     t.string   "name"
-    t.string   "data_type"
-    t.string   "default_value"
-    t.integer  "query_id"
+    t.string   "value"
+    t.string   "datatype"
+    t.boolean  "evaluated"
+    t.integer  "parameterizable_id"
+    t.string   "parameterizable_type"
+    t.integer  "function_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "parameters", ["query_id"], name: "index_parameters_on_query_id", using: :btree
+  add_index "parameters", ["function_id"], name: "index_parameters_on_function_id", using: :btree
+  add_index "parameters", ["parameterizable_id", "parameterizable_type"], name: "index_parameters_on_parameterizable_id_and_parameterizable_type", using: :btree
 
   create_table "permissions", force: true do |t|
     t.integer  "dashboard_id"
-    t.integer  "api_server_id"
+    t.integer  "data_source_server_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "permissions", ["api_server_id"], name: "index_permissions_on_api_server_id", using: :btree
   add_index "permissions", ["dashboard_id"], name: "index_permissions_on_dashboard_id", using: :btree
+  add_index "permissions", ["data_source_server_id"], name: "index_permissions_on_data_source_server_id", using: :btree
   add_index "permissions", ["user_id"], name: "index_permissions_on_user_id", using: :btree
 
-  create_table "queries", force: true do |t|
+  create_table "sources", force: true do |t|
     t.string   "type"
+    t.string   "code"
     t.text     "statement"
+    t.integer  "limit"
+    t.integer  "offset"
+    t.string   "result"
+    t.integer  "query_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sources", ["query_id"], name: "index_sources_on_query_id", using: :btree
+
+  create_table "unities", force: true do |t|
+    t.string   "name"
+    t.string   "symbol"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

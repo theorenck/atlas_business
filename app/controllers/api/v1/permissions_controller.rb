@@ -48,6 +48,6 @@ class API::V1::PermissionsController < ApplicationController
     end
 
     def permission_params
-      params.require(:permission).permit(:user_id, :dashboard_id, :api_server_id)
+      params.require(:permission).permit(:user_id, :dashboard_id, :datasource_server_id)
     end
 end

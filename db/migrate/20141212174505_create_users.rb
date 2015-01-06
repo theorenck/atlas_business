@@ -5,7 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :username
       t.string :password
       t.string :token
-      t.boolean :admin #temporary flag
+      t.boolean :admin
       t.timestamps
     end
   end

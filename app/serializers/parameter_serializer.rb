@@ -1,5 +1,5 @@
 class ParameterSerializer < ActiveModel::Serializer
-  attributes :name, :data_type, :default_value
+  attributes :name, :type, :value
 
   
 end

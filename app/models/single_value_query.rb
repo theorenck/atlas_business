@@ -1,3 +1,0 @@
-class SingleValueQuery < SingleResultQuery
-
-end

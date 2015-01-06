@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
 
+  resources :typed_parameters, except: [:new, :edit]
+  resources :sources, except: [:new, :edit]
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
       resources :authentications, only: :create
       resources :users 
       resources :permissions 
-      resources :api_servers
+      resources :datasource_servers
       resources :dashboards
       resources :indicators
       resources :widgets

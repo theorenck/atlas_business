@@ -23,3 +23,14 @@ gem 'thin', '~> 1.6.3'
 
 # Make any Ruby object quack like ActiveRecord
 gem 'active_type', '~> 0.3.1'
+
+# A toolkit of support libraries and Ruby core extensions extracted from the Rails framework. 
+# Rich support for multibyte strings, internationalization, time zones, and testing.
+gem 'activesupport', '~> 4.1.7'
+
+# URIs for your models makes it easy to pass references around.
+gem 'globalid', '~> 0.3.0'
+
+
+# Declare job classes that can be run by a variety of queueing backends.
+gem 'activejob'

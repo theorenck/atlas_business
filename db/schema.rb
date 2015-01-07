@@ -17,6 +17,15 @@ ActiveRecord::Schema.define(version: 20150106184803) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
+  create_table "aggregations_sources", force: true do |t|
+    t.integer  "aggregation_id"
+    t.integer  "source_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "aggregations_sources", ["aggregation_id", "source_id"], name: "index_aggregations_sources_on_aggregation_id_and_source_id", unique: true, using: :btree
+
   create_table "dashboards", force: true do |t|
     t.string   "name"
     t.string   "description"
@@ -93,12 +102,9 @@ ActiveRecord::Schema.define(version: 20150106184803) do
     t.integer  "limit"
     t.integer  "offset"
     t.string   "result"
-    t.integer  "query_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "sources", ["query_id"], name: "index_sources_on_query_id", using: :btree
 
   create_table "unities", force: true do |t|
     t.string   "name"

@@ -1,4 +1,4 @@
-class API::V1::IndicatorsController < ApplicationController
+class API::IndicatorsController < ApplicationController
   
   before_action :set_indicator, only: [:show, :update, :destroy]
 

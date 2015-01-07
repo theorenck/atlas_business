@@ -1,4 +1,4 @@
-class API::V1::AuthenticationsController < ApplicationController
+class API::AuthenticationsController < ApplicationController
   
   before_action :authenticate, except: :create
 

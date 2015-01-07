@@ -1,18 +1,15 @@
 Rails.application.routes.draw do
 
-  resources :typed_parameters, except: [:new, :edit]
-  resources :sources, except: [:new, :edit]
   namespace :api, defaults: { format: 'json' } do
-    namespace :v1 do
-      resources :authentications, only: :create
-      resources :users 
-      resources :permissions 
-      resources :datasource_servers
-      resources :dashboards
-      resources :indicators
-      resources :widgets
-      resources :widget_types
-    end
+    resources :authentications, only: :create
+    resources :users 
+    resources :permissions 
+    resources :data_source_servers
+    resources :dashboards
+    resources :indicators
+    resources :widgets
+    resources :widget_types
+    resources :sources, except: [:new, :edit]
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,4 +1,4 @@
-class API::V1::DashboardsController < ApplicationController
+class API::DashboardsController < ApplicationController
    
   before_action :set_dashboard, only: [:show, :update, :destroy]
 
@@ -47,7 +47,7 @@ class API::V1::DashboardsController < ApplicationController
 
   private
     def set_dashboard
-      @dashboard = Dashboard.includes(widgets:[:widget_type, indicator:[query:[:parameters]]]).find(params[:id])
+      @dashboard = Dashboard.includes(widgets:[:widget_type, indicator:[source:[:parameters]]]).find(params[:id])
     end
 
     def dashboard_params

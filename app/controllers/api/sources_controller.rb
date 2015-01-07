@@ -1,8 +1,12 @@
-class SourcesController < ApplicationController
+class API::SourcesController < ApplicationController
   # GET /sources
   # GET /sources.json
   def index
-    @sources = Source.all
+    if type = params[:type]
+      @sources = Source.where(type: type)
+    else
+      @sources = Source.all
+    end
 
     render json: @sources
   end

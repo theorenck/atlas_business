@@ -1,4 +1,4 @@
-class API::V1::WidgetTypesController < ApplicationController
+class API::WidgetTypesController < ApplicationController
   
 
   # GET /widget_types

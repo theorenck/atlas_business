@@ -5,7 +5,7 @@ class Indicator < ActiveRecord::Base
  #  belongs_to :query
  #  accepts_nested_attributes_for :query
 
-  has_many :parameters, as: :parameterizable, class_name: "TypedParameter"
+  has_many :parameters, through: :source
   has_many :widgets
   belongs_to :unity
   belongs_to :source

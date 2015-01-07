@@ -1,4 +1,4 @@
 class QuerySerializer < SourceSerializer
-  attributes :type, :statement
+  attributes :statement
 
 end

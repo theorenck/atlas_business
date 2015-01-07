@@ -55,6 +55,7 @@ class API::SourcesController < ApplicationController
   private
     
     def source_params
+      params = alias_attributes(:source,:parameters)
       params.require(:source).permit(:type,
         :name,
         :statement,

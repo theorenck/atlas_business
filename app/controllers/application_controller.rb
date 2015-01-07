@@ -20,4 +20,14 @@ class ApplicationController < ActionController::API
       self.headers['WWW-Authenticate'] = 'Token realm="API"'
       render json: 'Bad credentials', status: :unauthorized
     end
+
+  private
+
+    def alias_attributes(params, root, alternative)
+      if attributes = params[root][alternative]
+        params[root]["#{alternative}_attributes"] = attributes
+      end
+      params[root].delete alternative
+      params
+    end  
 end

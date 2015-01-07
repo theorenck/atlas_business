@@ -45,23 +45,13 @@ class API::IndicatorsController < ApplicationController
     end
 
     def indicator_params
-      params[:indicator][:query_attributes] = params[:indicator][:query] if params[:indicator][:query]
-      params[:indicator][:query_attributes][:parameters_attributes] = params[:indicator][:query_attributes][:parameters] if params[:indicator][:query_attributes][:parameters]
+      # params[:indicator][:query_attributes] = params[:indicator][:query] if params[:indicator][:query]
+      # params[:indicator][:query_attributes][:parameters_attributes] = params[:indicator][:query_attributes][:parameters] if params[:indicator][:query_attributes][:parameters]
       
       params.require(:indicator).permit(
         :name,
         :description,
-        :unity,
-        :query_id,
-        query_attributes:[
-          :type,
-          :statement,
-          parameters_attributes:[
-            :name,
-            :data_type,
-            :default_value
-          ]
-        ]
+        :unity
       )
     end
 end

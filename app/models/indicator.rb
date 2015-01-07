@@ -11,4 +11,6 @@ class Indicator < ActiveRecord::Base
   belongs_to :source
 
   accepts_nested_attributes_for :source
+  accepts_nested_attributes_for :unity
+  
 end

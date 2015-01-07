@@ -50,6 +50,6 @@ class API::DataSourceServersController < ApplicationController
     end
 
     def data_source_server_params
-      params.require(:data_source_server).permit(:url, :description, :name)
+      params.require(:data_source_server).permit(:name, :description,:url)
     end
 end

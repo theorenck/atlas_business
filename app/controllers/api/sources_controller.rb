@@ -25,7 +25,7 @@ class API::SourcesController < ApplicationController
     @source = Source.new(source_params)
 
     if @source.save
-      render json: @source, status: :created, location: @source
+      render json: @source#, status: :created, location: @source
     else
       render json: @source.errors, status: :unprocessable_entity
     end
@@ -55,6 +55,18 @@ class API::SourcesController < ApplicationController
   private
     
     def source_params
-      params.require(:source).permit(:code)
+      params.require(:source).permit(:type,
+        :name,
+        :statement,
+        :limit,
+        :offset,
+        :result,
+        parameters_attributes:[
+            :name,
+            :datatype,
+            :default_value
+        ])
     end
 end
+
+

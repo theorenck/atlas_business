@@ -1,5 +1,3 @@
 class TypedParameter < Parameter
-
-  has_many :parameters, :as => :parameterizable
-  
+  validates :datatype, presence: true
 end

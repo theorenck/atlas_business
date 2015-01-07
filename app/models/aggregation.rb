@@ -5,6 +5,7 @@ class Aggregation < Source
     join_table: :aggregations_sources, 
     foreign_key: :aggregation_id, 
     association_foreign_key: :source_id
+    
   has_many :executions
   
 end

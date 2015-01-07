@@ -1,6 +1,3 @@
 class ValuedParameter  < Parameter
-
-  has_many :parameters, :as => :parameterizable
-  belongs_to :execution
-
+  validates :value, presence: true
 end

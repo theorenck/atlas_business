@@ -1,4 +1,4 @@
 class SourceSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :type, :name 
   has_many :parameters
 end

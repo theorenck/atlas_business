@@ -1,6 +1,6 @@
 class Function < ActiveRecord::Base
 
   has_many :parameters, as: :parameterizable
-  has_many :executions
-
+  
+  accepts_nested_attributes_for :parameters
 end

@@ -88,3 +88,38 @@ localhost = DataSourceServer.create(url: "http://localhost:3000/api", name:'loca
 admin = User.create!(username:"admin", password:"admin", email:"zeta@zeta.com.br", token: '4361a34b6472e4634cd27f8d3f37108e', admin: true)
 user = User.create!(username:"user", password:"user", email:"zeta@zeta.com.br", token: 'user', admin: false)
 Permission.create(dashboard: dash, data_source_server: localhost, user: admin)
+
+
+## Aggregations
+functions = Function.create([
+  {
+    name: "execute",
+    parameters_attributes: [
+      {type: "Parameter", name: "statement"}
+    ]
+  },
+  {
+    name: "inject",
+    parameters_attributes: [
+      {type: "Parameter", name: "from"},
+      {type: "Parameter", name: "into"}
+    ]
+  }
+])
+
+source = Aggregation.new(name: 'Inadimplência')
+query = Query.new(name: 'Faturamento', statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\" FROM zw14fflu f WHERE f.modalidade IN ('P','R') AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}")
+query.parameters<<TypedParameter.new(name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00")
+query.parameters<<TypedParameter.new(name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00")
+source.sources << query
+query = Query.new(name: 'Faturamento', statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\" FROM zw14fflu f WHERE f.modalidade IN ('P','R') AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}")
+query.parameters<<TypedParameter.new(name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00")
+query.parameters<<TypedParameter.new(name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00")
+
+source.sources << query
+
+execution = Execution.new(function: functions[0])
+execution.parameters << ValuedParameter.new(name: 'statement', value:"Faturamento")
+source.executions << execution
+
+source.save

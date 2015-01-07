@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20150106184803) do
   end
 
   create_table "functions", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

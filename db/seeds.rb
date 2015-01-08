@@ -311,7 +311,7 @@ functions = Function.create([
 
 Aggregation.create({
   code: "percentual_inadimplencia",
-  name: "Percentual Inadimplência",
+  name: "Percentual de Inadimplência",
   description: "Realiza o cálculo do percentual de inadimplência dividindo o valor do faturamento pelo valor da inadimplência no período.",
   parameters_attributes: [
     {

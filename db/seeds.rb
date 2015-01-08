@@ -27,6 +27,7 @@ dashboards = Dashboard.create([
 queries = Query.create([
   #queries[0] - faturamento
   {
+    code: "valor_faturamento",
     name: 'Faturamento', 
     statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\" FROM zw14fflu f WHERE f.modalidade IN ('P','R') AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}",
     parameters_attributes: [
@@ -40,6 +41,7 @@ queries = Query.create([
   },
   #queries[1] - inadimplencia
   {
+    code: "valor_inadimplencia",
     name: 'Valor Inadimplencia', 
     statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_INADIMPLENCIA\" FROM zw14fflu f WHERE f.modalidade = 'P' AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datafluxo-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}",
     parameters_attributes: [
@@ -308,18 +310,59 @@ functions = Function.create([
 ])
 
 Aggregation.create({
-  name: "inadimplencia",
-  result: nil,
+  code: "percentual_inadimplencia",
+  name: "Percentual Inadimplência",
+  description: "Realiza o cálculo do percentual de inadimplência dividindo o valor do faturamento pelo valor da inadimplência no período.",
   parameters_attributes: [
     {
-      name: "parametro1",
-      value: "1990-05-03 00:00:00",
-      datatype: "timestamp"
+      name: "inicio",
+      value: "Time.now.begginig_of_month",
+      datatype: "timestamp",
+      evaluated: true
+    },
+    {
+      name: "fim",
+      value: "Time.now.end_of_month",
+      datatype: "timestamp",
+      evaluated: true
     }
   ],
   aggregated_sources_attributes:[
+    { source: queries[0] },
+    { source: queries[1] }
+  ],
+  executions_attributes:[
     {
-      source_id:1
+      function: functions[0],
+      parameters_attributes:[
+        {
+          name: "statement",
+          value: "inadimplencia",
+        }
+      ]
+    },
+    {
+      function: functions[1],
+      parameters_attributes:[
+        {
+          name: "from",
+          value: "?",
+        },
+         {
+          name: "into",
+          value: "?",
+        }
+      ]
+    },
+    {
+      function: functions[0],
+      parameters_attributes:[
+        {
+          name: "statement",
+          value: "inadimplencia",
+        }
+      ]
     }
-  ]
+  ],
+  result: "valor_inadimplencia.rows",
 })

@@ -3,9 +3,10 @@ class CreateSources < ActiveRecord::Migration
     create_table :sources do |t|
       t.string :type
       
+      t.string :code
       t.string :name
-     
-      t.text    :statement
+      t.text :description
+      t.text :statement
       t.integer :limit
       t.integer :offset
 

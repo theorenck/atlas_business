@@ -24,6 +24,7 @@ class ApplicationController < ActionController::API
   private
 
     def alias_attributes(params,alias_key)
+      p params[alias_key]
       if attributes = params[alias_key]
         params["#{alias_key}_attributes"] = attributes
       end

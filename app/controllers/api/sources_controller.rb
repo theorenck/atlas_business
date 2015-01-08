@@ -56,12 +56,13 @@ class API::SourcesController < ApplicationController
     
     def source_params
       
-      params[:source] = alias_attributes(params[:source],:parameters)
-      params[:source] = alias_attributes(params[:source],:aggregated_sources)
+      params_aliases(params)
 
       params.require(:source).permit(
         :type,
+        :code,
         :name,
+        :description,
         :statement,
         :limit,
         :offset,
@@ -79,8 +80,28 @@ class API::SourcesController < ApplicationController
           :source_id,
           :aggregation_idl,
           :_destroy
+        ],
+        executions_attributes: [
+          :function_id,
+          parameters_attributes:[
+            :id,
+            :name,
+            :datatype,
+            :value,
+            :evaluated,
+            :_destroy
+          ],
         ]
       )
+    end
+
+    def params_aliases(params)
+      params[:source] = alias_attributes(params[:source],:parameters)
+      params[:source] = alias_attributes(params[:source],:aggregated_sources)
+      params[:source] = alias_attributes(params[:source],:executions)
+      params[:source][:executions_attributes].each do |execution| 
+        execution = alias_attributes(execution,:parameters)
+      end
     end
 end
 

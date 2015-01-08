@@ -98,7 +98,9 @@ ActiveRecord::Schema.define(version: 20150106184803) do
 
   create_table "sources", force: true do |t|
     t.string   "type"
+    t.string   "code"
     t.string   "name"
+    t.text     "description"
     t.text     "statement"
     t.integer  "limit"
     t.integer  "offset"

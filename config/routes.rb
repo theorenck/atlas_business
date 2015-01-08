@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :widget_types
     resources :sources, except: [:new, :edit]
     resources :unities
+    resources :functions
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

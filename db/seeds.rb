@@ -333,6 +333,7 @@ Aggregation.create({
   ],
   executions_attributes:[
     {
+      order: 0,
       function: functions[0],
       parameters_attributes:[
         {
@@ -342,6 +343,7 @@ Aggregation.create({
       ]
     },
     {
+      order: 1,
       function: functions[1],
       parameters_attributes:[
         {
@@ -355,6 +357,7 @@ Aggregation.create({
       ]
     },
     {
+      order: 2,
       function: functions[0],
       parameters_attributes:[
         {

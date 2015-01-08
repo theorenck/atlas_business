@@ -69,6 +69,7 @@ class API::SourcesController < ApplicationController
         :result,
         parameters_attributes:[
           :id,
+          :type,
           :name,
           :datatype,
           :value,
@@ -85,6 +86,7 @@ class API::SourcesController < ApplicationController
           :function_id,
           parameters_attributes:[
             :id,
+            :type,
             :name,
             :datatype,
             :value,

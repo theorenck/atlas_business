@@ -1,3 +1,3 @@
 class ParameterSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :type, :name
 end

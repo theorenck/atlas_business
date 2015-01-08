@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20150106184803) do
   end
 
   create_table "executions", force: true do |t|
+    t.integer  "order"
     t.integer  "aggregation_id"
     t.integer  "function_id"
     t.datetime "created_at"

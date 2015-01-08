@@ -14,12 +14,12 @@ class CreateSources < ActiveRecord::Migration
       t.timestamps
     end
     
-    create_table :aggregations_sources do |t|
+    create_table :aggregated_sources do |t|
       t.integer :aggregation_id
       t.integer :source_id
       t.timestamps
     end
 
-    add_index(:aggregations_sources, [:aggregation_id, :source_id], :unique => true)
+    add_index(:aggregated_sources, [:aggregation_id, :source_id], :unique => true)
   end
 end

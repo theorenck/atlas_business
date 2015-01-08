@@ -57,18 +57,26 @@ class API::SourcesController < ApplicationController
     def source_params
       
       params[:source] = alias_attributes(params[:source],:parameters)
+      params[:source] = alias_attributes(params[:source],:aggregated_sources)
 
-      params.require(:source).permit(:type,
+      params.require(:source).permit(
+        :type,
         :name,
         :statement,
         :limit,
         :offset,
         :result,
         parameters_attributes:[
-            :name,
-            :datatype,
-            :value
-        ])
+          :name,
+          :datatype,
+          :value,
+          :evaluated
+        ],
+        aggregated_sources_attributes: [
+          :source_id,
+          :aggregation_id
+        ]
+      )
     end
 end
 

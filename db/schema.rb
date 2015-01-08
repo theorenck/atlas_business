@@ -17,14 +17,14 @@ ActiveRecord::Schema.define(version: 20150106184803) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "aggregations_sources", force: true do |t|
+  create_table "aggregated_sources", force: true do |t|
     t.integer  "aggregation_id"
     t.integer  "source_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "aggregations_sources", ["aggregation_id", "source_id"], name: "index_aggregations_sources_on_aggregation_id_and_source_id", unique: true, using: :btree
+  add_index "aggregated_sources", ["aggregation_id", "source_id"], name: "index_aggregated_sources_on_aggregation_id_and_source_id", unique: true, using: :btree
 
   create_table "dashboards", force: true do |t|
     t.string   "name"

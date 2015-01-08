@@ -23,7 +23,6 @@ dashboards = Dashboard.create([
   }
 ])
 
-
 ## Sources
 queries = Query.create([
   #queries[0] - faturamento

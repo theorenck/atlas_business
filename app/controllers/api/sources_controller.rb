@@ -67,6 +67,7 @@ class API::SourcesController < ApplicationController
         :offset,
         :result,
         parameters_attributes:[
+          :id,
           :name,
           :datatype,
           :value,

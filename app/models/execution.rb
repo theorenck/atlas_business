@@ -7,5 +7,5 @@ class Execution < ActiveRecord::Base
 
   delegate :name, to: :function
 
-  accepts_nested_attributes_for :parameters
+  accepts_nested_attributes_for :parameters, allow_destroy: true
 end

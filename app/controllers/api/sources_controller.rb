@@ -70,11 +70,14 @@ class API::SourcesController < ApplicationController
           :name,
           :datatype,
           :value,
-          :evaluated
+          :evaluated,
+          :_destroy
         ],
         aggregated_sources_attributes: [
+          :id,
           :source_id,
-          :aggregation_id
+          :aggregation_idl,
+          :_destroy
         ]
       )
     end

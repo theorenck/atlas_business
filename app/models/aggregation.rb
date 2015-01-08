@@ -6,5 +6,5 @@ class Aggregation < Source
 
   has_many :sources, :through => :aggregated_sources, :source => :source
 
-  accepts_nested_attributes_for :aggregated_sources  
+  accepts_nested_attributes_for :aggregated_sources, allow_destroy: true 
 end

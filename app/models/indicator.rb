@@ -10,7 +10,7 @@ class Indicator < ActiveRecord::Base
   belongs_to :unity
   belongs_to :source
 
-  accepts_nested_attributes_for :source
+  accepts_nested_attributes_for :source, allow_destroy: true
   accepts_nested_attributes_for :unity
   
 end

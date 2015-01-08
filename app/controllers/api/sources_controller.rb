@@ -86,6 +86,7 @@ class API::SourcesController < ApplicationController
           :id,
           :order,
           :function_id,
+          :_destroy,
           parameters_attributes:[
             :id,
             :type,

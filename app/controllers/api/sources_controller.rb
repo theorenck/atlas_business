@@ -83,6 +83,8 @@ class API::SourcesController < ApplicationController
           :_destroy
         ],
         executions_attributes: [
+          :id,
+          :order,
           :function_id,
           parameters_attributes:[
             :id,
@@ -91,6 +93,7 @@ class API::SourcesController < ApplicationController
             :datatype,
             :value,
             :evaluated,
+            :paraterizable_id,
             :_destroy
           ],
         ]

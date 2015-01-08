@@ -1,5 +1,4 @@
 class ExecutionSerializer < ActiveModel::Serializer
-  attributes :id, :order
-  has_one :function
+  attributes :id, :order, :function_id
   has_many :parameters
 end

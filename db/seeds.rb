@@ -29,7 +29,7 @@ queries = Query.create([
   {
     code: "valor_faturamento",
     name: 'Faturamento', 
-    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\" FROM zw14fflu f WHERE f.modalidade IN ('P','R') AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}",
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\" FROM zw14fflu f WHERE f.modalidade IN ('P','R') AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
@@ -43,7 +43,8 @@ queries = Query.create([
   {
     code: "valor_inadimplencia",
     name: 'Valor Inadimplencia', 
-    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_INADIMPLENCIA\" FROM zw14fflu f WHERE f.modalidade = 'P' AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datafluxo-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}",
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_INADIMPLENCIA\" FROM zw14fflu f WHERE f.modalidade = 'P' AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datafluxo-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim
+    ",
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
@@ -56,7 +57,7 @@ queries = Query.create([
   #queries[2] - novos contratos
   {
     name: 'Novos Contratos', 
-    statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacoes) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim}",
+    statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacoes) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
@@ -65,14 +66,14 @@ queries = Query.create([
         name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
       },
       {
-        name: 'situacoes', datatype:'varchar' , value:"'LOC Locado', 'LOC Finalizado', 'LOC Cancelado'"
+        name: 'situacoes', datatype:'integer' , value:"'LOC Locado','LOC Finalizado','LOC Cancelado'"
       }
     ]
   },
   #queries[3] - contratos ativos
   {
     name: 'Contratos Ativos', 
-    statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacao) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} < {TS :fim} AND p.dataemiss <> 0",
+    statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacao) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} < :fim AND p.dataemiss <> 0",
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
@@ -81,14 +82,14 @@ queries = Query.create([
         name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
       },
       {
-        name: 'situacao', datatype:'varchar' , value:"'LOC Locado'"
+        name: 'situacao', datatype:'varchar' , value:"LOC Locado"
       }
     ]
   },
   #queries[4] - novos contratos dia
   {
     name: 'Novos Contratos Dia', 
-    statement: "SELECT {FN CONVERT({FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})},SQL_DATE)} AS \"DATA_EMISSAO\", count(*) AS \"QUANTIDADE\" FROM zw14vped p WHERE  p.situacao IN (:situacoes)  AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})}   BETWEEN {TS :inicio} AND {TS :fim} GROUP BY  p.dataemiss  ORDER BY  p.dataemiss DESC",    
+    statement: "SELECT {FN CONVERT({FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})},SQL_DATE)} AS \"DATA_EMISSAO\", count(*) AS \"QUANTIDADE\" FROM zw14vped p WHERE  p.situacao IN (:situacoes)  AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})}   BETWEEN :inicio AND :fim GROUP BY  p.dataemiss  ORDER BY  p.dataemiss DESC",    
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
@@ -97,14 +98,14 @@ queries = Query.create([
         name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
       },
       {
-        name: 'situacoes', datatype:'varchar' , value:"'LOC Locado', 'LOC Finalizado', 'LOC Cancelado'"
+        name: 'situacoes', datatype:'integer' , value:"'LOC Locado', 'LOC Finalizado', 'LOC Cancelado'"
       }
     ]
   },
   #queries[5] - pedidos por situacao
   {
     name: 'Pedidos por situacao', 
-    statement: "SELECT p.situacao AS \"SITUACAO\", count(*) AS \"QUANTIDADE\" FROM  zw14vped p WHERE p.situacao IS NOT NULL AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim} GROUP BY   p.situacao",
+    statement: "SELECT p.situacao AS \"SITUACAO\", count(*) AS \"QUANTIDADE\" FROM  zw14vped p WHERE p.situacao IS NOT NULL AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim GROUP BY p.situacao",
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value:"2014-10-30 00:00:00"
@@ -113,14 +114,14 @@ queries = Query.create([
         name: 'fim', datatype:'timestamp' , value:"2014-11-30 00:00:00"
       },
       {
-        name: 'situacao', datatype:'varchar' , value:"'LOC Locado'"
+        name: 'situacao', datatype:'varchar' , value:"LOC Locado"
       }
     ]
   },
   #queries[6] - clientes mais locaram
   {
     name: 'Clientes Mais Locaram', 
-    statement: "SELECT V.NOMECLIENTE AS \"CLIENTE\", {FN CONVERT({FN ROUND(SUM(V.VALORTOTALGERAL),2)},SQL_FLOAT)} AS \"TOTAL\" FROM ZW14VPED V WHERE V.SITUACAO = :situacao AND {FN TIMESTAMPADD (SQL_TSI_DAY, V.DATAEMISS-72687, {D '2000-01-01'})} BETWEEN {TS :inicio} AND {TS :fim} GROUP BY V.NOMECLIENTE ORDER BY 1",
+    statement: "SELECT V.NOMECLIENTE AS \"CLIENTE\", {FN CONVERT({FN ROUND(SUM(V.VALORTOTALGERAL),2)},SQL_FLOAT)} AS \"TOTAL\" FROM ZW14VPED V WHERE V.SITUACAO = :situacao AND {FN TIMESTAMPADD (SQL_TSI_DAY, V.DATAEMISS-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim GROUP BY V.NOMECLIENTE ORDER BY 1",
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
@@ -129,7 +130,7 @@ queries = Query.create([
         name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
       },
       {
-        name: 'situacao', datatype:'varchar' , value:"'LOC Locado'"
+        name: 'situacao', datatype:'varchar' , value:"LOC Locado"
       }
     ]
   }

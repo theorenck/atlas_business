@@ -52,11 +52,12 @@ class API::IndicatorsController < ApplicationController
         :code,
         :name,
         :description,
-        :unities_attributes[
-          :id,
-          :name,
-          :symbol
-        ]
+        :unity_id
+        # :unities_attributes[
+        #   :id,
+        #   :name,
+        #   :symbol
+        # ]
       )
     end
 end

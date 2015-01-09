@@ -6,7 +6,7 @@ status = WidgetType.create(name:'status')
 line   = WidgetType.create(name:'line')
 
 ## Unities
-dinheiro = Unity.create(name: 'Dinheiro', symbol: 'R$')
+dinheiro = Unity.create(name: 'Moeda', symbol: 'R$')
 porcentagem = Unity.create(name: 'Porcentagem', symbol: '%')
 
 ## Dashboards

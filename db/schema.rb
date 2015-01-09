@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20150106184803) do
   create_table "indicators", force: true do |t|
     t.string   "name"
     t.string   "description"
+    t.string   "code"
     t.integer  "source_id"
     t.string   "source_type"
     t.integer  "unity_id"

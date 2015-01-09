@@ -1,6 +1,6 @@
 class PermissionSerializer < ActiveModel::Serializer
   attributes :id, :dashboard_id, :data_source_server_id, :user_id
-  # has_one :dashboard, :data_source_server, :user
+  has_one :dashboard, :data_source_server, :user
 
 
   def dashboard_id

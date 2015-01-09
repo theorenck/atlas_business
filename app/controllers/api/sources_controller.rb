@@ -79,7 +79,7 @@ class API::SourcesController < ApplicationController
         aggregated_sources_attributes: [
           :id,
           :source_id,
-          :aggregation_idl,
+          :aggregation_id,
           :_destroy
         ],
         executions_attributes: [
@@ -96,7 +96,7 @@ class API::SourcesController < ApplicationController
             :evaluated,
             :paraterizable_id,
             :_destroy
-          ],
+          ]
         ]
       )
     end

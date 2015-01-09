@@ -52,7 +52,8 @@ class API::IndicatorsController < ApplicationController
         :code,
         :name,
         :description,
-        :unity_id
+        :unity_id,
+        :source_id,
         # :unities_attributes[
         #   :id,
         #   :name,

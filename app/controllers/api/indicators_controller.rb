@@ -49,9 +49,14 @@ class API::IndicatorsController < ApplicationController
       # params[:indicator][:query_attributes][:parameters_attributes] = params[:indicator][:query_attributes][:parameters] if params[:indicator][:query_attributes][:parameters]
       
       params.require(:indicator).permit(
+        :code,
         :name,
         :description,
-        :unity
+        :unities_attributes[
+          :id,
+          :name,
+          :symbol
+        ]
       )
     end
 end

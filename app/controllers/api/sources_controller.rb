@@ -53,9 +53,9 @@ class API::SourcesController < ApplicationController
   end
 
   private
-    
+
     def source_params
-      
+
       params_aliases(params)
 
       params.require(:source).permit(
@@ -105,8 +105,10 @@ class API::SourcesController < ApplicationController
       params[:source] = alias_attributes(params[:source],:parameters)
       params[:source] = alias_attributes(params[:source],:aggregated_sources)
       params[:source] = alias_attributes(params[:source],:executions)
-      params[:source][:executions_attributes].each do |execution| 
-        execution = alias_attributes(execution,:parameters)
+      if params[:source][:type] == 'Aggregation'
+        params[:source][:executions_attributes].each do |execution|
+          execution = alias_attributes(execution,:parameters)
+        end
       end
     end
 end

@@ -32,10 +32,10 @@ queries = Query.create([
     statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\" FROM zw14fflu f WHERE f.modalidade IN ('P','R') AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
     parameters_attributes: [
       {
-        name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
+        name: 'inicio', datatype:'timestamp' , value: nil
       },
       {
-        name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
+        name: 'fim', datatype:'timestamp' , value: nil
       }
     ]
   },
@@ -46,10 +46,10 @@ queries = Query.create([
     statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_INADIMPLENCIA\" FROM zw14fflu f WHERE f.modalidade = 'P' AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datafluxo-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
     parameters_attributes: [
       {
-        name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
+        name: 'inicio', datatype:'timestamp' , value: nil
       },
       {
-        name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
+        name: 'fim', datatype:'timestamp' , value: nil
       }
     ]
   },
@@ -60,10 +60,10 @@ queries = Query.create([
     statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacoes) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
     parameters_attributes: [
       {
-        name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
+        name: 'inicio', datatype:'timestamp' , value: nil
       },
       {
-        name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
+        name: 'fim', datatype:'timestamp' , value: nil
       },
       {
         name: 'situacoes', datatype:'integer' , value:"'LOC Locado','LOC Finalizado','LOC Cancelado'"
@@ -77,10 +77,10 @@ queries = Query.create([
     statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacao) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} < :fim AND p.dataemiss <> 0",
     parameters_attributes: [
       {
-        name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
+        name: 'inicio', datatype:'timestamp' , value: nil
       },
       {
-        name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
+        name: 'fim', datatype:'timestamp' , value: nil
       },
       {
         name: 'situacao', datatype:'varchar' , value:"LOC Locado"
@@ -94,10 +94,10 @@ queries = Query.create([
     statement: "SELECT {FN CONVERT({FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})},SQL_DATE)} AS \"DATA_EMISSAO\", count(*) AS \"QUANTIDADE\" FROM zw14vped p WHERE  p.situacao IN (:situacoes)  AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})}   BETWEEN :inicio AND :fim GROUP BY  p.dataemiss  ORDER BY  p.dataemiss DESC",
     parameters_attributes: [
       {
-        name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
+        name: 'inicio', datatype:'timestamp' , value: nil
       },
       {
-        name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
+        name: 'fim', datatype:'timestamp' , value: nil
       },
       {
         name: 'situacoes', datatype:'integer' , value:"'LOC Locado', 'LOC Finalizado', 'LOC Cancelado'"
@@ -111,10 +111,10 @@ queries = Query.create([
     statement: "SELECT p.situacao AS \"SITUACAO\", count(*) AS \"QUANTIDADE\" FROM  zw14vped p WHERE p.situacao IS NOT NULL AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim GROUP BY p.situacao",
     parameters_attributes: [
       {
-        name: 'inicio', datatype:'timestamp' , value:"2014-10-30 00:00:00"
+        name: 'inicio', datatype:'timestamp' , value: nil
       },
       {
-        name: 'fim', datatype:'timestamp' , value:"2014-11-30 00:00:00"
+        name: 'fim', datatype:'timestamp' , value: nil
       },
       {
         name: 'situacao', datatype:'varchar' , value:"LOC Locado"
@@ -128,13 +128,13 @@ queries = Query.create([
     statement: "SELECT V.NOMECLIENTE AS \"CLIENTE\", {FN CONVERT({FN ROUND(SUM(V.VALORTOTALGERAL),2)},SQL_FLOAT)} AS \"TOTAL\" FROM ZW14VPED V WHERE V.SITUACAO = :situacao AND {FN TIMESTAMPADD (SQL_TSI_DAY, V.DATAEMISS-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim GROUP BY V.NOMECLIENTE ORDER BY 1",
     parameters_attributes: [
       {
-        name: 'inicio', datatype:'timestamp' , value:"2000-01-01 00:00:00"
+        name: 'inicio', datatype:'timestamp' , value: nil
       },
       {
-        name: 'fim', datatype:'timestamp' , value:"2014-12-30 00:00:00"
+        name: 'fim', datatype:'timestamp' , value: nil
       },
       {
-        name: 'situacao', datatype:'varchar' , value:"LOC Locado"
+        name: 'situacao', datatype:'varchar' , value: "LOC Locado"
       }
     ]
   }

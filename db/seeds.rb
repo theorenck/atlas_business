@@ -13,13 +13,13 @@ porcentagem = Unity.create(name: 'Porcentagem', symbol: '%')
 dashboards = Dashboard.create([
   #dashboards[0]
   {
-    name: 'Dashboard',
-    description: 'Dash description'
+    name: 'RM Locações',
+    description: 'Dashboard da RM'
   },
   #dashboards[1]
   {
-    name: 'Dashboard 2',
-    description: 'Dash 2 description'
+    name: 'Duetto',
+    description: 'Dashboard da Duetto'
   }
 ])
 
@@ -27,9 +27,9 @@ dashboards = Dashboard.create([
 queries = Query.create([
   #queries[0] - faturamento
   {
-    code: "valor_faturamento",
-    name: 'Valor do Faturamento',
-    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\" FROM zw14fflu f WHERE f.modalidade IN ('P','R') AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
+    code: "rm_valor_faturamento",
+    name: 'RM - Valor do Faturamento',
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\"\nFROM zw14fflu f\nWHERE f.modalidade IN ('P',\n                       'R')\n  AND f.estimativa = 'C'\n  AND f.pagarreceber = 'R'\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value: nil
@@ -41,23 +41,23 @@ queries = Query.create([
   },
   #queries[1] - inadimplencia
   {
-    code: "valor_inadimplencia",
-    name: 'Valor Inadimplência',
-    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_INADIMPLENCIA\" FROM zw14fflu f WHERE f.modalidade = 'P' AND f.estimativa = 'C' AND f.pagarreceber = 'R' AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datafluxo-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
+    code: "rm_valor_inadimplencia",
+    name: 'RM - Valor Inadimplência',
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_INADIMPLENCIA\"\nFROM zw14fflu f\nWHERE f.modalidade = 'P'\n  AND f.estimativa = 'C'\n  AND f.pagarreceber = 'R'\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datafluxo-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
     parameters_attributes: [
       {
-        name: 'inicio', datatype:'timestamp' , value: nil
+        name: 'inicio', datatype:'timestamp' , value: 'Date.parse(:inicio) - 1.year' , evaluated: true
       },
       {
-        name: 'fim', datatype:'timestamp' , value: nil
+        name: 'fim', datatype:'timestamp' , value: ':inicio'
       }
     ]
   },
   #queries[2] - novos contratos
   {
-    code: 'novos_contratos',
-    name: 'Novos Contratos',
-    statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacoes) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
+    code: 'rm_novos_contratos',
+    name: 'RM - Novos Contratos',
+    statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\"\nFROM zw14vped p\nWHERE p.situacao IN(:situacoes)\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value: nil
@@ -72,8 +72,8 @@ queries = Query.create([
   },
   #queries[3] - contratos ativos
   {
-    code: 'contratos_ativos',
-    name: 'Contratos Ativos',
+    code: 'rm_contratos_ativos',
+    name: 'RM - Contratos Ativos',
     statement: "SELECT COUNT(*) AS \"CONTRATOS_PERIODO\" FROM zw14vped p WHERE p.situacao IN(:situacao) AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} < :fim AND p.dataemiss <> 0",
     parameters_attributes: [
       {
@@ -89,8 +89,8 @@ queries = Query.create([
   },
   #queries[4] - novos contratos dia
   {
-    code: 'novos_contratos_dia',
-    name: 'Novos Contratos por Dia',
+    code: 'rm_novos_contratos_dia',
+    name: 'RM - Novos Contratos por Dia',
     statement: "SELECT {FN CONVERT({FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})},SQL_DATE)} AS \"DATA_EMISSAO\", count(*) AS \"QUANTIDADE\" FROM zw14vped p WHERE  p.situacao IN (:situacoes)  AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})}   BETWEEN :inicio AND :fim GROUP BY  p.dataemiss  ORDER BY  p.dataemiss DESC",
     parameters_attributes: [
       {
@@ -106,8 +106,8 @@ queries = Query.create([
   },
   #queries[5] - pedidos por situacao
   {
-    code: 'pedidos_por_situacao',
-    name: 'Pedidos por situação',
+    code: 'rm_pedidos_por_situacao',
+    name: 'RM - Pedidos por situação',
     statement: "SELECT p.situacao AS \"SITUACAO\", count(*) AS \"QUANTIDADE\" FROM  zw14vped p WHERE p.situacao IS NOT NULL AND {FN TIMESTAMPADD (SQL_TSI_DAY, p.dataemiss-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim GROUP BY p.situacao",
     parameters_attributes: [
       {
@@ -121,11 +121,25 @@ queries = Query.create([
       }
     ]
   },
-  #queries[6] - clientes mais locaram
+  #queries[6] - faturamento por cliente
   {
-    code: 'clientes_mais_locaram',
-    name: 'Clientes Mais Locaram',
+    code: 'rm_faturamento_por_cliente',
+    name: 'RM - Faturamento por cliente',
     statement: "SELECT V.NOMECLIENTE AS \"CLIENTE\", {FN CONVERT({FN ROUND(SUM(V.VALORTOTALGERAL),2)},SQL_FLOAT)} AS \"TOTAL\" FROM ZW14VPED V WHERE V.SITUACAO = :situacao AND {FN TIMESTAMPADD (SQL_TSI_DAY, V.DATAEMISS-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim GROUP BY V.NOMECLIENTE ORDER BY 1",
+    parameters_attributes: [
+      {
+        name: 'inicio', datatype:'timestamp' , value: nil
+      },
+      {
+        name: 'situacao', datatype:'varchar' , value: "LOC Locado"
+      }
+    ]
+  },
+  #queries[7] - valor total da receita
+  {
+    code: 'dt_faturamento',
+    name: 'Duetto - Faturamento',
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\"\nFROM zw20fflu f\nWHERE f.modalidade IN ('P','R')\n  AND f.estimativa = 'C'\n  AND f.pagarreceber = 'R'\n  AND (f.tipoorigem = 'S' OR f.tipodestino = 'S' )\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datafluxo-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
     parameters_attributes: [
       {
         name: 'inicio', datatype:'timestamp' , value: nil
@@ -133,13 +147,79 @@ queries = Query.create([
       {
         name: 'fim', datatype:'timestamp' , value: nil
       },
+    ]
+  },
+  #queries[8] - valor total do RH
+  {
+    code: 'dt_rh',
+    name: 'Duetto - RH',
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RH\"\nFROM zw20fflu f\nWHERE f.modalidade IN ('P','R')\n  AND f.estimativa = 'C'\n  AND f.tipodestino = 'P'\n  AND {FN CONVERT(f.codigodestino, SQL_INTEGER)} IN (36,37,38,39,41,42,43,44,45,47,48,49,51,89,120,154,156,158,159,161,167,168,171,172,228,231,240,255,264,267,269,273)\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.competenciaorigem-72687, {D '2000-01-01'})}\n       BETWEEN :inicio AND :fim",
+    parameters_attributes: [
       {
-        name: 'situacao', datatype:'varchar' , value: "LOC Locado"
-      }
+        name: 'inicio', datatype:'timestamp' , value: nil
+      },
+      {
+        name: 'fim', datatype:'timestamp' , value: nil
+      },
+    ]
+  },
+  #queries[9] - valor da despesa total
+  {
+    code: 'dt_despesa_total',
+    name: 'Duetto - Despesa Total',
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_DESPESA\"\nFROM zw20fflu f\nWHERE f.modalidade IN ('P','R')\n  AND f.estimativa = 'C'\n  AND f.pagarreceber = 'P'\n  AND (f.tipoorigem = 'P' OR f.tipodestino = 'P' )\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.competenciaorigem-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
+    parameters_attributes: [
+      {
+        name: 'inicio', datatype:'timestamp' , value: nil
+      },
+      {
+        name: 'fim', datatype:'timestamp' , value: nil
+      },
+    ]
+  },
+  #queries[10] - valor total de impostos
+  {
+    code: 'dt_impostos',
+    name: 'Duetto - Impostos',
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_IMPOSTOS\"\nFROM zw20fflu f\nWHERE f.modalidade IN ('P','R')\n  AND f.estimativa = 'C'\n  AND f.tipodestino = 'S'\n  AND {FN CONVERT(f.codigodestino, SQL_INTEGER)} IN (53,56,57,58,59)\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datafluxo-72687, {D '2000-01-01'})}\n      BETWEEN :inicio AND :fim",
+    parameters_attributes: [
+      {
+        name: 'inicio', datatype:'timestamp' , value: nil
+      },
+      {
+        name: 'fim', datatype:'timestamp' , value: nil
+      },
+    ]
+  },
+  #queries[11] - valor total ADM
+  {
+    code: 'dt_adm',
+    name: 'Duetto - ADM',
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_ADM\"\nFROM zw20fflu f\nWHERE f.modalidade IN ('P','R')\n  AND f.estimativa = 'C'\n  AND f.tipoorigem = 'P'\n  AND {FN CONVERT(f.codigoorigem, SQL_INTEGER)} = 137\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.competenciaorigem-72687, {D '2000-01-01'})}\n      BETWEEN :inicio AND :fim",
+    parameters_attributes: [
+      {
+        name: 'inicio', datatype:'timestamp' , value: nil
+      },
+      {
+        name: 'fim', datatype:'timestamp' , value: nil
+      },
+    ]
+  },
+  #queries[12] - RM - valor total receita para inadimplencia
+  {
+    code: 'rm_valor_total_receita_para_inadimplencia',
+    name: 'RM - valor total receita para inadimplencia',
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\"\nFROM zw14fflu f\nWHERE f.modalidade IN ('P',\n'R')\n  AND f.estimativa = 'C'\n  AND f.pagarreceber = 'R'\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
+    parameters_attributes: [
+      {
+        name: 'inicio', datatype:'timestamp' , value: "Date.parse(:inicio) - 1.year", evaluated: true
+      },
+      {
+        name: 'fim', datatype:'timestamp' , value: ":inicio"
+      },
     ]
   }
 ])
-
 
 indicators = Indicator.create([
   #indicators[0] - indicatorFaturamento
@@ -200,8 +280,8 @@ Widget.create([
     indicator: indicators[0]
   },
   {
-    name:'Inadimplencia',
-    description:'Inadimplencia',
+    name:'Inadimplência',
+    description:'Inadimplência',
     widget_type: status,
     color: 'red',
     position:3 ,
@@ -267,7 +347,14 @@ datasources = DataSourceServer.create([
     name:'localhost',
     description: 'localhost',
     alive: true
-  }
+  },
+  # datasources[1]
+  {
+    url: "http://zetainfo.dyndns.info:9010",
+    name:'Dashboard',
+    description: 'Dashboard Default',
+    alive: true
+  },
 ])
 
 users = User.create!([
@@ -294,22 +381,26 @@ Permission.create([
     dashboard: dashboards[0],
     data_source_server: datasources[0],
     user: users[0]
+  },
+  {
+    dashboard: dashboards[0],
+    data_source_server: datasources[1],
+    user: users[0]
   }
 ])
 
 # Aggregations
 functions = Function.create([
   {
-    name: "execute",
+    name: "execution",
     parameters_attributes: [
-      {type: "Parameter", name: "statement"}
+      {type: "ValuedParameter", name: "value"}
     ]
   },
   {
-    name: "inject",
+    name: "script",
     parameters_attributes: [
-      {type: "Parameter", name: "from"},
-      {type: "Parameter", name: "into"}
+      {type: "ValuedParameter", name: "value"}
     ]
   }
 ])
@@ -318,59 +409,44 @@ Aggregation.create({
   code: "percentual_inadimplencia",
   name: "Percentual de Inadimplência",
   description: "Realiza o cálculo do percentual de inadimplência dividindo o valor do faturamento pelo valor da inadimplência no período.",
-  parameters_attributes: [
-    {
-      name: "inicio",
-      value: "Time.now.begginig_of_month",
-      datatype: "timestamp",
-      evaluated: true
-    },
-    {
-      name: "fim",
-      value: "Time.now.end_of_month",
-      datatype: "timestamp",
-      evaluated: true
-    }
-  ],
   aggregated_sources_attributes:[
-    { source: queries[0] },
-    { source: queries[1] }
+    { source: queries[1] },
+    { source: queries[12] }
   ],
   executions_attributes:[
     {
-      order: 0,
+      order: "0",
       function: functions[0],
       parameters_attributes:[
         {
-          name: "statement",
-          value: "inadimplencia",
+          type: "ValuedParameter",
+          name: "value",
+          value: "0"
         }
       ]
     },
     {
-      order: 1,
+      order: "1",
+      function: functions[0],
+      parameters_attributes:[
+        {
+          type: "ValuedParameter",
+          name: "value",
+          value: "1"
+        }
+      ]
+    },
+    {
+      order: "2",
       function: functions[1],
       parameters_attributes:[
         {
-          name: "from",
-          value: "?",
-        },
-         {
-          name: "into",
-          value: "?",
-        }
-      ]
-    },
-    {
-      order: 2,
-      function: functions[0],
-      parameters_attributes:[
-        {
-          name: "statement",
-          value: "inadimplencia",
+          type: "ValuedParameter",
+          name: "value",
+          value: "results[0][:resultset][:rows][0][0] = (results[0][:resultset][:rows][0][0] / results[1][:resultset][:rows][0][0]) * 100"
         }
       ]
     }
   ],
-  result: "valor_inadimplencia.rows",
+  result: "results[0]"
 })

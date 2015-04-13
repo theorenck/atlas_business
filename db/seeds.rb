@@ -16,11 +16,11 @@ dashboards = Dashboard.create([
     name: 'RM Locações',
     description: 'Dashboard da RM'
   },
-  #dashboards[1]
-  {
-    name: 'Duetto',
-    description: 'Dashboard da Duetto'
-  }
+  # #dashboards[1]
+  # {
+  #   name: 'Duetto',
+  #   description: 'Dashboard da Duetto'
+  # }
 ])
 
 ## Sources
@@ -224,7 +224,72 @@ queries = Query.create([
   }
 ])
 
-indicators = Indicator.create([
+
+functions = Function.create!([
+  {
+    name: "execution",
+    parameters_attributes: [
+      {type: "ValuedParameter", name: "value", value: "value"}
+    ]
+  },
+  {
+    name: "script",
+    parameters_attributes: [
+      {type: "ValuedParameter", name: "value", value: "value"}
+    ]
+  }
+])
+
+# Aggregations
+aggregation = Aggregation.create!({
+  code: "percentual_inadimplencia",
+  name: "Percentual de Inadimplência",
+  description: "Realiza o cálculo do percentual de inadimplência dividindo o valor do faturamento pelo valor da inadimplência no período.",
+  aggregated_sources_attributes:[
+    { source: queries[1] },
+    { source: queries[9] }
+  ],
+  executions_attributes:[
+    {
+      order: "0",
+      function: functions[0],
+      parameters_attributes:[
+        {
+          type: "ValuedParameter",
+          name: "value",
+          value: "0"
+        }
+      ]
+    },
+    {
+      order: "1",
+      function: functions[0],
+      parameters_attributes:[
+        {
+          type: "ValuedParameter",
+          name: "value",
+          value: "1"
+        }
+      ]
+    },
+    {
+      order: "2",
+      function: functions[1],
+      parameters_attributes:[
+        {
+          type: "ValuedParameter",
+          name: "value",
+          value: "results[0][:resultset][:rows][0][0] = (results[0][:resultset][:rows][0][0] / results[1][:resultset][:rows][0][0]) * 100"
+        }
+      ]
+    }
+  ],
+  result: "results[0]"
+})
+
+
+
+indicators = Indicator.create!([
   #indicators[0] - indicatorFaturamento
   {
     unity: dinheiro,
@@ -235,9 +300,9 @@ indicators = Indicator.create([
   #indicators[1] - indicatorInadimplencia
   {
     unity: porcentagem,
-    name: 'Porcentagem',
+    name: 'Valor Inadimplência',
     description: "valorInadimplencia",
-    source: queries[1]
+    source: aggregation
   },
   #indicators[2] - indicatorNovosContratos
   {
@@ -270,6 +335,7 @@ indicators = Indicator.create([
     source: queries[6]
   }
 ])
+
 
 Widget.create([
   {
@@ -346,14 +412,14 @@ Widget.create([
 datasources = DataSourceServer.create([
   # datasources[0]
   {
-    url: "http://localhost:3000/api",
+    url: "http://localhost:9010",
     name:'localhost',
     description: 'localhost',
     alive: true
   },
   # datasources[1]
   {
-    url: "http://zetainfo.dyndns.info:9010",
+    url: "http://localhost:9010",
     name:'Dashboard',
     description: 'Dashboard Default',
     alive: true
@@ -379,6 +445,7 @@ users = User.create!([
   }
 ])
 
+
 Permission.create([
   {
     dashboard: dashboards[0],
@@ -391,65 +458,3 @@ Permission.create([
     user: users[0]
   }
 ])
-
-# Aggregations
-functions = Function.create!([
-  {
-    name: "execution",
-    parameters_attributes: [
-      {type: "ValuedParameter", name: "value", value: "value"}
-    ]
-  },
-  {
-    name: "script",
-    parameters_attributes: [
-      {type: "ValuedParameter", name: "value", value: "value"}
-    ]
-  }
-])
-
-Aggregation.create({
-  code: "percentual_inadimplencia",
-  name: "Percentual de Inadimplência",
-  description: "Realiza o cálculo do percentual de inadimplência dividindo o valor do faturamento pelo valor da inadimplência no período.",
-  aggregated_sources_attributes:[
-    { source: queries[1] },
-    { source: queries[9] }
-  ],
-  executions_attributes:[
-    {
-      order: "0",
-      function: functions[0],
-      parameters_attributes:[
-        {
-          type: "ValuedParameter",
-          name: "value",
-          value: "0"
-        }
-      ]
-    },
-    {
-      order: "1",
-      function: functions[0],
-      parameters_attributes:[
-        {
-          type: "ValuedParameter",
-          name: "value",
-          value: "1"
-        }
-      ]
-    },
-    {
-      order: "2",
-      function: functions[1],
-      parameters_attributes:[
-        {
-          type: "ValuedParameter",
-          name: "value",
-          value: "results[0][:resultset][:rows][0][0] = (results[0][:resultset][:rows][0][0] / results[1][:resultset][:rows][0][0]) * 100"
-        }
-      ]
-    }
-  ],
-  result: "results[0]"
-})

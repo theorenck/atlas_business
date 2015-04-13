@@ -24,7 +24,7 @@ gem 'thin', '~> 1.6.3'
 # Make any Ruby object quack like ActiveRecord
 gem 'active_type', '~> 0.3.1'
 
-# A toolkit of support libraries and Ruby core extensions extracted from the Rails framework. 
+# A toolkit of support libraries and Ruby core extensions extracted from the Rails framework.
 # Rich support for multibyte strings, internationalization, time zones, and testing.
 gem 'activesupport', '~> 4.1.7'
 

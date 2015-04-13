@@ -131,6 +131,9 @@ queries = Query.create([
         name: 'inicio', datatype:'timestamp' , value: nil
       },
       {
+        name: 'fim', datatype:'timestamp' , value: nil
+      },
+      {
         name: 'situacao', datatype:'varchar' , value: "LOC Locado"
       }
     ]
@@ -163,7 +166,21 @@ queries = Query.create([
       },
     ]
   },
-  #queries[9] - valor da despesa total
+  #queries[9] - RM - valor total receita para inadimplencia
+  {
+    code: 'rm_valor_total_receita_para_inadimplencia',
+    name: 'RM - valor total receita para inadimplencia',
+    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\"\nFROM zw14fflu f\nWHERE f.modalidade IN ('P',\n'R')\n  AND f.estimativa = 'C'\n  AND f.pagarreceber = 'R'\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
+    parameters_attributes: [
+      {
+        name: 'inicio', datatype:'timestamp' , value: "Date.parse(:inicio) - 1.year", evaluated: true
+      },
+      {
+        name: 'fim', datatype:'timestamp' , value: ":inicio"
+      },
+    ]
+  },
+  #queries[10] - valor da despesa total
   {
     code: 'dt_despesa_total',
     name: 'Duetto - Despesa Total',
@@ -177,7 +194,7 @@ queries = Query.create([
       },
     ]
   },
-  #queries[10] - valor total de impostos
+  #queries[11] - valor total de impostos
   {
     code: 'dt_impostos',
     name: 'Duetto - Impostos',
@@ -191,7 +208,7 @@ queries = Query.create([
       },
     ]
   },
-  #queries[11] - valor total ADM
+  #queries[12] - valor total ADM
   {
     code: 'dt_adm',
     name: 'Duetto - ADM',
@@ -202,20 +219,6 @@ queries = Query.create([
       },
       {
         name: 'fim', datatype:'timestamp' , value: nil
-      },
-    ]
-  },
-  #queries[12] - RM - valor total receita para inadimplencia
-  {
-    code: 'rm_valor_total_receita_para_inadimplencia',
-    name: 'RM - valor total receita para inadimplencia',
-    statement: "SELECT SUM(f.valorfluxo) AS \"VALOR_TOTAL_RECEITA\"\nFROM zw14fflu f\nWHERE f.modalidade IN ('P',\n'R')\n  AND f.estimativa = 'C'\n  AND f.pagarreceber = 'R'\n  AND {FN TIMESTAMPADD (SQL_TSI_DAY, f.datalancamento-72687, {D '2000-01-01'})} BETWEEN :inicio AND :fim",
-    parameters_attributes: [
-      {
-        name: 'inicio', datatype:'timestamp' , value: "Date.parse(:inicio) - 1.year", evaluated: true
-      },
-      {
-        name: 'fim', datatype:'timestamp' , value: ":inicio"
       },
     ]
   }
@@ -390,17 +393,17 @@ Permission.create([
 ])
 
 # Aggregations
-functions = Function.create([
+functions = Function.create!([
   {
     name: "execution",
     parameters_attributes: [
-      {type: "ValuedParameter", name: "value"}
+      {type: "ValuedParameter", name: "value", value: "value"}
     ]
   },
   {
     name: "script",
     parameters_attributes: [
-      {type: "ValuedParameter", name: "value"}
+      {type: "ValuedParameter", name: "value", value: "value"}
     ]
   }
 ])
@@ -411,7 +414,7 @@ Aggregation.create({
   description: "Realiza o cálculo do percentual de inadimplência dividindo o valor do faturamento pelo valor da inadimplência no período.",
   aggregated_sources_attributes:[
     { source: queries[1] },
-    { source: queries[12] }
+    { source: queries[9] }
   ],
   executions_attributes:[
     {

@@ -34,3 +34,6 @@ gem 'globalid', '~> 0.3.0'
 
 # Declare job classes that can be run by a variety of queueing backends.
 gem 'activejob'
+
+# Makes running your Rails app easier. Based on the ideas behind 12factor.net
+gem 'rails_12factor', group: :production

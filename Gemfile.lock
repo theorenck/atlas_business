@@ -52,7 +52,7 @@ GEM
     mime-types (2.4.3)
     minitest (5.5.0)
     multi_json (1.10.1)
-    pg (0.17.1-x86-mingw32)
+    pg (0.18.1-x86-mingw32)
     rack (1.5.2)
     rack-cors (0.2.9)
     rack-test (0.6.2)
@@ -70,6 +70,11 @@ GEM
     rails-api (0.3.1)
       actionpack (>= 3.2.11)
       railties (>= 3.2.11)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.4)
+    rails_stdout_logging (0.0.3)
     railties (4.1.7)
       actionpack (= 4.1.7)
       activesupport (= 4.1.7)
@@ -106,9 +111,10 @@ DEPENDENCIES
   activejob
   activesupport (~> 4.1.7)
   globalid (~> 0.3.0)
-  pg (~> 0.17.1)
+  pg (~> 0.18.0)
   rack-cors (~> 0.2.9)
   rails (= 4.1.7)
   rails-api (~> 0.3.1)
+  rails_12factor
   thin (~> 1.6.3)
   tzinfo-data

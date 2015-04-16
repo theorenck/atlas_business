@@ -4,7 +4,7 @@ gem 'rails', '4.1.7'
 
 gem 'rails-api', '~> 0.3.1'
 
-gem 'pg', '~> 0.18.0', platforms: [:mingw, :mswin]
+gem 'pg', '~> 0.18.0'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin]

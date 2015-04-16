@@ -1,3 +1,4 @@
 class AuthenticationSerializer < ActiveModel::Serializer
-  attributes :token, :admin
+  attributes :token
+  has_one :user
 end

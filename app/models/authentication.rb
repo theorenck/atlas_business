@@ -16,8 +16,8 @@ class Authentication < ActiveType::Object
     @user.token
   end
 
-  def admin
-    @user.admin
+  def user
+    @user
   end
 
 end

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
+    get 'ping' => 'ping#index'
     resources :authentications, only: :create
     resources :users 
     resources :permissions 

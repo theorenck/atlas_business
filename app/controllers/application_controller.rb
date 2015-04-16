@@ -18,7 +18,7 @@ class ApplicationController < ActionController::API
 
     def render_unauthorized
       self.headers['WWW-Authenticate'] = 'Token realm="API"'
-      render json: 'Bad credentials', status: :unauthorized
+      render json: {message: 'Bad credentials'}, status: :unauthorized
     end
 
   private

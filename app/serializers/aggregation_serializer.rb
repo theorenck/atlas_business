@@ -4,5 +4,6 @@ class AggregationSerializer  < ActiveModel::Serializer
   has_many :parameters
   has_many :sources
   has_many :executions
+  has_many :aggregated_sources
 
 end

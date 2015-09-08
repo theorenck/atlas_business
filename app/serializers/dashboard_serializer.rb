@@ -5,8 +5,12 @@ class DashboardSerializer < ActiveModel::Serializer
   has_many :widgets
 
   def data_source_servers
-  	object.permissions
-  		.select  { |e| e.user == options[:authenticated] }
-  		.collect { |e| e.data_source_server }
-  end
+  	unless option[:authenticated].admin
+	  	object.permissions
+	  		.select  { |e| e.user == options[:authenticated] }
+	  		.collect { |e| e.data_source_server }
+  	else
+  		object.data_source_servers
+  	end
+	end
 end

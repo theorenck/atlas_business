@@ -6,10 +6,10 @@ class API::DashboardsController < ApplicationController
   def index
     if @authenticated.admin
       @dashboards = Dashboard.all
-      render json: @dashboards
+      render json: @dashboards, authenticated: @authenticated
     else
       @dashboards = Dashboard.joins(:permissions).where(:permissions => {:user_id => @authenticated.id})
-      render json: @dashboards
+      render json: @dashboards, authenticated: @authenticated
     end
 
   end

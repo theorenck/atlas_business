@@ -1,11 +1,11 @@
 class API::DashboardsController < ApplicationController
-   
+
   before_action :set_dashboard, only: [:show, :update, :destroy]
 
   # GET /dashboards
   def index
     if @authenticated.admin
-      @dashboards = Dashboard.all  
+      @dashboards = Dashboard.all
       render json: @dashboards
     else
       @dashboards = Dashboard.joins(:permissions).where(:permissions => {:user_id => @authenticated.id})
@@ -16,7 +16,7 @@ class API::DashboardsController < ApplicationController
 
   # GET /dashboards/1
   def show
-    render json: @dashboard
+    render json: @dashboard, authenticated: @authenticated
   end
 
   # POST /dashboards
@@ -52,7 +52,7 @@ class API::DashboardsController < ApplicationController
 
     def dashboard_params
       params.require(:dashboard).permit(
-        :name, 
+        :name,
         :description
       )
     end

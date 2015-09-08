@@ -13,7 +13,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin]
 gem 'rack-cors', '~> 0.2.9', :require => 'rack/cors'
 
 # Use ActiveModel::Serializers to serialize models
-gem 'active_model_serializers', '~> 0.8.0'
+gem 'active_model_serializers', '~> 0.8.3'
 
 # A fast and very simple Ruby web server
 gem 'thin', '~> 1.6.3'

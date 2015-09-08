@@ -106,7 +106,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  active_model_serializers (~> 0.8.0)
+  active_model_serializers (~> 0.8.3)
   active_type (~> 0.3.1)
   activejob
   activesupport (~> 4.1.7)

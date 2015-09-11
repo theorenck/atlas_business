@@ -18,7 +18,7 @@ class API::PermissionsController < ApplicationController
     @permission = Permission.new(permission_params)
 
     if @permission.save
-      render json: @permission
+      render json: @permission, authenticated: @authenticated
     else
       render json: @permission.errors, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class API::PermissionsController < ApplicationController
   # PATCH/PUT /permissions/1
   def update
     if @permission.update(permission_params)
-      render json: @permission
+      render json: @permission, authenticated: @authenticated
     else
       render json: @permission.errors, status: :unprocessable_entity
     end

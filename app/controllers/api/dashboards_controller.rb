@@ -24,7 +24,7 @@ class API::DashboardsController < ApplicationController
     @dashboard = Dashboard.new(dashboard_params)
 
     if @dashboard.save
-      render json: @dashboard
+      render json: @dashboard, authenticated: @authenticated
     else
       render json: @dashboard.errors, status: :unprocessable_entity
     end
@@ -33,7 +33,7 @@ class API::DashboardsController < ApplicationController
   # PATCH/PUT /dashboards/1
   def update
     if @dashboard.update(dashboard_params)
-      render json: @dashboard
+      render json: @dashboard, authenticated: @authenticated
     else
       render json: @dashboard.errors, status: :unprocessable_entity
     end

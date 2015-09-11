@@ -1,16 +1,16 @@
 class API::PermissionsController < ApplicationController
-   
+
   before_action :set_permissions, only: [:show, :update, :destroy]
 
   # GET /permissions
   def index
     @permissions = Permission.all
-    render json: @permissions
+    render json: @permissions, authenticated: @authenticated
   end
 
   # GET /permissions/1
   def show
-    render json: @permission
+    render json: @permission, authenticated: @authenticated
   end
 
   # POST /permissions
